@@ -31,6 +31,7 @@ def trace(model, args=(), kwargs=None):
                     dtype=str(v.type()),
                 )
 
+
     nodes = []
     for x in graph.nodes():
         node = Node(

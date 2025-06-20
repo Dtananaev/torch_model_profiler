@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from torchprofile.utils.trace import trace
+from torchinspect.utils.trace import trace
 
 if __name__ == '__main__':
     in_features = 16

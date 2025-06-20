@@ -7,13 +7,6 @@ class Variable:
         self.dtype = dtype
         self.shape = shape
 
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        self._name = name
 
     @property
     def dtype(self):
@@ -22,14 +15,6 @@ class Variable:
     @dtype.setter
     def dtype(self, dtype):
         self._dtype = dtype.lower()
-
-    @property
-    def shape(self):
-        return self._shape
-
-    @shape.setter
-    def shape(self, shape):
-        self._shape = shape
 
     @property
     def ndim(self):

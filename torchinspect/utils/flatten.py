@@ -1,12 +1,12 @@
 from collections import deque
-
+from typing import Any
 import torch
 import torch.nn as nn
 
-__all__ = ['flatten', 'Flatten']
 
 
-def flatten(inputs):
+def flatten(inputs: Any)-> list[torch.Tensor]:
+    """Flatten nested structures of tensors into a flat list."""
     queue = deque([inputs])
     outputs = []
     while queue:
@@ -21,10 +21,13 @@ def flatten(inputs):
 
 
 class Flatten(nn.Module):
-    def __init__(self, model):
+    """A module that flattens nested structures of tensors into a flat list."""
+    def __init__(self, model: nn.Module)-> None:
+        """Initialize the Flatten module with a model."""
         super().__init__()
         self.model = model
 
-    def forward(self, *args, **kwargs):
+    def forward(self, *args, **kwargs)-> list[torch.Tensor]:
+        """Forward pass that flattens the outputs of the model."""
         outputs = self.model(*args, **kwargs)
         return flatten(outputs)
