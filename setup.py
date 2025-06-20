@@ -11,6 +11,6 @@ setup(
         'torch>=1.4',
         'torchvision>=0.4',
     ],
-    url='',
+    url='https://github.com/Dtananaev/torchinspect.git',
     license='MIT',
 )
