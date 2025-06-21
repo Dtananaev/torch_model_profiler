@@ -66,21 +66,27 @@ if __name__ == '__main__':
 
 
         macs = profile_macs(model, inputs)
-        print('{}: {:.4g} G'.format(f"{model_name}", macs / 1e9))
+        print('{}: {:.4g} G(Billions)'.format(f"{model_name}", macs / 1e9))
         # The size of weights
         total_params = sum(p.numel() for p in model.parameters())
         print('{}: {:.4g} M'.format(f"{model_name}", total_params / 1e6))
-        weights_size = [sum(p.numel() * p.element_size() for p in model.parameters()) / (1024 ** 2)] # Convert to MB
-        print(f"Total weights size for {model_name}: {weights_size[0]:.4f} MB")
+        weights_size = [p.numel() * p.element_size() / (1024 ** 2) for p in model.parameters()] # Convert to MB
+        peak_weights_size = np.max(weights_size)
+        print(f"Total weights size for {model_name}: {sum(weights_size):.4f} MB")
+
+        print(f"Peak weights size for {model_name}: {peak_weights_size:.4f} MB")
+
         activation_data_mb, activation_data_param = profile_activation_memory(model, inputs)
-        print("Activations memory usage:")
 
-        for entry in activation_data_mb:
-            print(f"{entry['layer']:<20} | Input: {entry['input_MB']:.4f} MB | Output: {entry['output_MB']:.4f} MB | Total: {entry['total_MB']:.4f} MB ")
+        activations_memory =  [entry['total_MB'] for entry in activation_data_mb]
+        peak_activation_memory = np.max(activations_memory)
+        print(f"Peak activation memory for {model_name}: {peak_activation_memory:.4f} MB")
+        #for entry in activation_data_mb:
+        #    print(f"{entry['layer']:<20} | Input: {entry['input_MB']:.4f} MB | Output: {entry['output_MB']:.4f} MB | Total: {entry['total_MB']:.4f} MB ")
 
 
-        for entry in activation_data_param:
-            print(f"{entry['layer']:<20} | Input: {entry['input_params']:.4f} | Output: {entry['output_params']:.4f} | Total: {entry['total_params']:.4f}")
+        #for entry in activation_data_param:
+        #    print(f"{entry['layer']:<20} | Input: {entry['input_params']:.4f} | Output: {entry['output_params']:.4f} | Total: {entry['total_params']:.4f}")
 
 
 
